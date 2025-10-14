@@ -26,7 +26,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  int questionNumber = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,7 +36,7 @@ class _QuizPageState extends State<QuizPage> {
           flex: 6,
           child: Center(
             child: Text(
-              quizBrain.questionBank[questionNumber].questionText,
+              quizBrain.getQuestionText(),
               style: TextStyle(
                 fontSize: 25.0,
                 color: Colors.white,
@@ -59,20 +59,19 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnwer =
-                    QuizBrain().questionBank[questionNumber].questionAnswer;
+                bool correctAnwer = quizBrain.getQuestionAnswer();
                 if (correctAnwer == true) {
                   print('user got it right');
                 } else {
                   print('user got it wrong');
                 }
                 setState(() {
+                  quizBrain.nextQuestion();
                   scoreKeeper.add(Icon(
                     Icons.check,
                     color: Colors.green,
                   ));
                 });
-                questionNumber++;
               },
             ),
           ),
@@ -92,19 +91,18 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool correctAnwer =
-                    QuizBrain().questionBank[questionNumber].questionAnswer;
+                bool correctAnwer = quizBrain.getQuestionAnswer();
                 if (correctAnwer == false) {
                   print('user got it right');
                 } else {
                   print('user got it wrong');
                 }
                 setState(() {
+                  quizBrain.nextQuestion();
                   scoreKeeper.add(Icon(
                     Icons.close,
                     color: Colors.red,
                   ));
-                  questionNumber++;
                 });
               },
             ),

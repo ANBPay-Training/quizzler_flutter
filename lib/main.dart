@@ -30,8 +30,8 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
   void checkAnswer(bool userpicked) {
-    if (!quizBrain.isFinished()) {
-      setState(() {
+    setState(() {
+      if (!quizBrain.isFinished()) {
         print(quizBrain.isFinished());
         if (quizBrain.getQuestionAnswer() == userpicked) {
           scoreKeeper.add(Icon(
@@ -45,29 +45,29 @@ class _QuizPageState extends State<QuizPage> {
           ));
         }
         quizBrain.nextQuestion();
-      });
-    } else {
-      Alert(
-        context: context,
-        title: 'Finished!',
-        desc: 'You\'ve reached the end of the quiz.',
-        buttons: [
-          DialogButton(
-            child: Text(
-              "Restart",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+      } else {
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Restart",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                  quizBrain.reset();
+                  scoreKeeper.clear();
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                Navigator.pop(context);
-                quizBrain.reset();
-                scoreKeeper.clear();
-              });
-            },
-          ),
-        ],
-      ).show();
-    }
+          ],
+        ).show();
+      }
+    });
   }
 
   @override

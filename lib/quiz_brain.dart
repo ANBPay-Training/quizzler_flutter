@@ -39,18 +39,22 @@ class QuizBrain {
   }
 
   void nextQuestion() {
-    if (_questionNumber < (_questionBank.length - 1)) {
+    if (_questionNumber < _questionBank.length - 1) {
       _questionNumber++;
       print(_questionNumber);
     }
   }
 
   bool isFinished() {
-    if (_questionNumber >= _questionBank.length - 1) {
+    if (_questionNumber == _questionBank.length - 1) {
       return true;
     } else {
       return false;
     }
+  }
+
+  int lengthOfQustionBank() {
+    return _questionBank.length;
   }
 
   void reset() {

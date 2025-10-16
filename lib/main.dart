@@ -29,11 +29,21 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  void checkAnswer(bool userpicked) {
-    setState(() {
-      if (!quizBrain.isFinished()) {
-        print(quizBrain.isFinished());
-        if (quizBrain.getQuestionAnswer() == userpicked) {
+  void checkAnswer(bool userpickedAnswer) {
+    if (quizBrain.isFinished() &&
+        scoreKeeper.length == quizBrain.lengthOfQustionBank()) {
+      Alert(
+        context: context,
+        title: 'Finished!',
+        desc: 'You\'ve reached the end of the quiz.',
+      ).show();
+      setState(() {
+        quizBrain.reset();
+        scoreKeeper.clear();
+      });
+    } else {
+      setState(() {
+        if (quizBrain.getQuestionAnswer() == userpickedAnswer) {
           scoreKeeper.add(Icon(
             Icons.check,
             color: Colors.green,
@@ -45,29 +55,8 @@ class _QuizPageState extends State<QuizPage> {
           ));
         }
         quizBrain.nextQuestion();
-      } else {
-        Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Restart",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {
-                setState(() {
-                  Navigator.pop(context);
-                  quizBrain.reset();
-                  scoreKeeper.clear();
-                });
-              },
-            ),
-          ],
-        ).show();
-      }
-    });
+      });
+    }
   }
 
   @override
